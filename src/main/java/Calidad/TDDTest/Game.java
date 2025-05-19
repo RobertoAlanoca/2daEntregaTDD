@@ -11,7 +11,7 @@ public class Game {
         if (winner != null || draw) throw new IllegalStateException("El juego ha terminado");
         if (x < 0 || x >= 3) throw new IllegalArgumentException("X fuera de rango");
         if (y < 0 || y >= 3) throw new IllegalArgumentException("Y fuera de rango");
-        if (board[x][y] != null) throw new IllegalArgumentException("Posición ocupada");
+        //if (board[x][y] != null) throw new IllegalArgumentException("Posición ocupada");
 
         board[x][y] = currentPlayer;
         moves++;
