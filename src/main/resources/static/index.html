@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Tres en Raya</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #f4f4f4; text-align: center; }
+        h1 { color: #333; }
+        #board { display: grid; grid-template-columns: repeat(3, 80px); grid-gap: 10px; justify-content: center; margin: 30px auto; }
+        .cell {
+            width: 80px; height: 80px; font-size: 2.5em; background: #fff; border: 2px solid #333; cursor: pointer; display: flex; align-items: center; justify-content: center;
+        }
+        #status { margin: 20px; font-size: 1.2em; }
+        #reset { padding: 10px 30px; font-size: 1em; background: #007bff; color: #fff; border: none; border-radius: 5px; cursor: pointer; }
+        #reset:hover { background: #0056b3; }
+    </style>
+</head>
+<body>
+    <h1>Tres en Raya</h1>
+    <div id="status">Cargando...</div>
+    <div id="board"></div>
+    <button id="reset">Reiniciar</button>
+
+    <script>
+        const boardDiv = document.getElementById('board');
+        const statusDiv = document.getElementById('status');
+        const resetBtn = document.getElementById('reset');
+
+        function fetchBoard() {
+            fetch('/game/board')
+                .then(r => r.json())
+                .then(board => {
+                    boardDiv.innerHTML = '';
+                    for (let x = 0; x < 3; x++) {
+                        for (let y = 0; y < 3; y++) {
+                            const cell = document.createElement('div');
+                            cell.className = 'cell';
+                            cell.textContent = board[x][y] ? board[x][y] : '';
+                            cell.onclick = () => makeMove(x, y);
+                            boardDiv.appendChild(cell);
+                        }
+                    }
+                });
+        }
+
+        function fetchStatus() {
+            fetch('/game/status')
+                .then(r => r.text())
+                .then(status => {
+                    statusDiv.textContent = status;
+                });
+        }
+
+        function makeMove(x, y) {
+            fetch(`/game/move?x=${x}&y=${y}`, { method: 'POST' })
+                .then(r => r.text())
+                .then(msg => {
+                    fetchBoard();
+                    fetchStatus();
+                });
+        }
+
+        resetBtn.onclick = () => {
+            fetch('/game/reset', { method: 'POST' })
+                .then(r => r.text())
+                .then(msg => {
+                    fetchBoard();
+                    fetchStatus();
+                });
+        };
+
+        // Inicializar
+        fetchBoard();
+        fetchStatus();
+    </script>
+</body>
+</html>
