@@ -21,8 +21,8 @@ public class Game {
         } else if (moves == 9) {
             draw = true;
         } else {
-            //currentPlayer = currentPlayer.equals("X") ? "O" : "X";
-            currentPlayer ="O";
+            currentPlayer = currentPlayer.equals("X") ? "O" : "X";
+            //currentPlayer ="O";
         }
     }
 
