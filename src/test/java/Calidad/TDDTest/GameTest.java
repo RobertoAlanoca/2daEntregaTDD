@@ -7,12 +7,29 @@ import org.junit.jupiter.api.Test;
 
 public class GameTest {
 
-
     @Test
-    void prueba(){//este codigo sale bien
+    void primerTurnoSiempreEsX() {
         Game game = new Game();
-        game.placePiece(-4, 2);
-
+        assertEquals("X", game.getCurrentPlayer(), "El primer turno debe ser de X");
     }
 
+    @Test
+    void despuesDeXJuegaO() {
+        Game game = new Game();
+        game.placePiece(0, 0); // X juega
+        assertEquals("O", game.getCurrentPlayer(), "Después de X debe jugar O");
+    }
+
+    @Test
+    void despuesDeOJuegaX() {
+        Game game = new Game();
+        game.placePiece(0, 0); // X
+        game.placePiece(1, 0); // O
+        assertEquals("X", game.getCurrentPlayer(), "Después de O debe jugar X");
+    }
+
+
+
 }
+
+
