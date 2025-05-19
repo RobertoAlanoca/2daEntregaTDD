@@ -2,8 +2,8 @@ package Calidad.TDDTest;
 
 public class Game {
     private String[][] board = new String[3][3];
-    private String currentPlayer = "X";
-    //private String currentPlayer = "O";
+    //private String currentPlayer = "X";
+    private String currentPlayer = "O";
     private String winner = null;
     private boolean draw = false;
     private int moves = 0;
