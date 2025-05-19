@@ -7,7 +7,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class GameTest {
 
 
-   /* @Test
+   @Test
     public void testNoWinnerAtStart() {// Prueba exitosa Req3 Prueba 1
         Game game = new Game();
 
@@ -55,7 +55,7 @@ public class GameTest {
         System.out.println("Ganador detectado: " + winner + "\n");
 
         assertEquals("X", winner, "X debería ganar con una línea vertical en la columna 0");
-    }*/
+    }
     @Test
     public void testDiagonalWin() { // Req3 Prueba 4
         Game game = new Game();
