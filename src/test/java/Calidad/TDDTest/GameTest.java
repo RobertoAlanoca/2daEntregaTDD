@@ -25,7 +25,7 @@ public class GameTest {
         assertFalse(game.isDraw(), "Todavía no es empate");
     }
     @Test
-    public void testHorizontalWin() { // Req3 Prueba 1
+    public void testHorizontalWin() { // Req3 Prueba 2
         Game game = new Game();
         game.placePiece(0, 0); // X
         game.placePiece(1, 0); // O
@@ -41,7 +41,7 @@ public class GameTest {
         assertEquals("X", winner, "X debería ganar con una línea horizontal en la fila 0");
     }
     @Test
-    public void testVerticalWin() { // Req3 Prueba 2
+    public void testVerticalWin() { // Req3 Prueba 3
         Game game = new Game();
         game.placePiece(0, 0); // X
         game.placePiece(0, 1); // O
@@ -57,7 +57,7 @@ public class GameTest {
         assertEquals("X", winner, "X debería ganar con una línea vertical en la columna 0");
     }*/
     @Test
-    public void testDiagonalWin() { // Req3 Prueba 3
+    public void testDiagonalWin() { // Req3 Prueba 4
         Game game = new Game();
         game.placePiece(0, 0); // X
         game.placePiece(0, 1); // O
