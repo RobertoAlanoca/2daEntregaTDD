@@ -15,6 +15,7 @@ public class Game {
 
         board[x][y] = currentPlayer;
         moves++;
+
         if (checkWin(x, y)) {
             winner = currentPlayer;
         } else if (moves == 9) {
@@ -24,17 +25,32 @@ public class Game {
         }
     }
 
+    // Verifica si el jugador actual ha ganado
     private boolean checkWin(int x, int y) {
         String p = board[x][y];
-        // Check row
-        if (board[x][0] == p && board[x][1] == p && board[x][2] == p) return true;
-        // Check column
-        if (board[0][y] == p && board[1][y] == p && board[2][y] == p) return true;
-        // Check diagonals
-        if (x == y && board[0][0] == p && board[1][1] == p && board[2][2] == p) return true;
-        if (x + y == 2 && board[0][2] == p && board[1][1] == p && board[2][0] == p) return true;
+        if (p == null) return false;
+
+        // Verificar fila
+        if (board[x][0] != null && board[x][1] != null && board[x][2] != null &&
+                board[x][0].equals(p) && board[x][1].equals(p) && board[x][2].equals(p)) return true;
+
+        // Verificar columna
+        if (board[0][y] != null && board[1][y] != null && board[2][y] != null &&
+                board[0][y].equals(p) && board[1][y].equals(p) && board[2][y].equals(p)) return true;
+
+        // Verificar diagonal principal
+        if (x == y &&
+                board[0][0] != null && board[1][1] != null && board[2][2] != null &&
+                board[0][0].equals(p) && board[1][1].equals(p) && board[2][2].equals(p)) return true;
+
+        // Verificar diagonal secundaria
+        if (x + y == 2 &&
+                board[0][2] != null && board[1][1] != null && board[2][0] != null &&
+                board[0][2].equals(p) && board[1][1].equals(p) && board[2][0].equals(p)) return true;
+
         return false;
     }
+
 
     public String[][] getBoard() {
         return board;
