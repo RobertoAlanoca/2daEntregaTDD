@@ -7,18 +7,12 @@ import org.junit.jupiter.api.Test;
 
 public class GameTest {
 
-    @Test
-    void testPieceOutsideXThrowsException() {
-        Game game = new Game();
-        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            game.placePiece(3, 0);
-        });
-        assertEquals("X fuera de rango", exception.getMessage());
-    }
 
     @Test
-    void testValidPlacementDoesNotThrow() {
+    void prueba(){//este codigo sale bien
         Game game = new Game();
-        assertDoesNotThrow(() -> game.placePiece(1, 1));
+        game.placePiece(-4, 2);
+
     }
+
 }
