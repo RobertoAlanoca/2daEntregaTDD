@@ -22,7 +22,7 @@ public class Game {
             draw = true;
         } else {
             //currentPlayer = currentPlayer.equals("X") ? "O" : "X";
-            //currentPlayer ="O";
+            currentPlayer ="O";
         }
     }
 
