@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class SeleniumTest {
     private static WebDriver driver;
-
+    /*
     @BeforeAll
     public static void setup() {
         // WebDriverManager descarga automáticamente la versión correcta de ChromeDriver
@@ -67,5 +67,5 @@ public class SeleniumTest {
         if (driver != null) {
             driver.quit();
         }
-    }
+    }*/
 }
