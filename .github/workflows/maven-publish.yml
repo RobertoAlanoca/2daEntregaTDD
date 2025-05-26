@@ -1,26 +1,31 @@
-name: Java CI with Maven
+name: Blue-Green Deployment CI/CD Pipeline
 
 on:
   push:
-    branches: [ main,TDD,ATDD]
+    branches: [ main, TDD, ATDD ]
   pull_request:
-    branches: [ main,TDD,ATDD]
+    branches: [ main, TDD, ATDD ]
 
 jobs:
-  build:
+  # ========================================
+  # BLUE PHASE: Pre-Deploy Testing
+  # Tests que deben pasar antes del deploy
+  # ========================================
+  blue-phase:
+    name: "🔵 Blue Phase - Pre-Deploy Tests"
     runs-on: ubuntu-latest
-
+    
     steps:
-      - name: Checkout código
-        uses: actions/checkout@v3
+      - name: 📥 Checkout código
+        uses: actions/checkout@v4
 
-      - name: Configurar JDK 17
-        uses: actions/setup-java@v3
+      - name: ☕ Configurar JDK 17
+        uses: actions/setup-java@v4
         with:
           java-version: '17'
           distribution: 'temurin'
 
-      - name: Cache del repositorio Maven
+      - name: 📦 Cache del repositorio Maven
         uses: actions/cache@v3
         with:
           path: ~/.m2
@@ -28,5 +33,171 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-maven
 
-      - name: Compilar y testear con Maven
-        run: mvn clean verify
+      - name: 🔨 Compilar aplicación
+        run: mvn clean compile
+
+      - name: 🧪 Ejecutar tests unitarios (Blue Phase)
+        run: mvn test -Punit-tests
+        env:
+          CI: true
+
+      - name: 📊 Subir reportes de tests unitarios
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: blue-phase-test-reports
+          path: target/surefire-reports/
+
+      - name: ✅ Blue Phase completada
+        run: echo "🔵 Blue Phase tests passed - Ready for deployment"
+
+  # ========================================
+  # DEPLOY PHASE: Build and Package
+  # Construcción del artefacto deployable
+  # ========================================
+  deploy-phase:
+    name: "📦 Deploy Phase - Build & Package"
+    runs-on: ubuntu-latest
+    needs: blue-phase
+    
+    steps:
+      - name: 📥 Checkout código
+        uses: actions/checkout@v4
+
+      - name: ☕ Configurar JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: 📦 Cache del repositorio Maven
+        uses: actions/cache@v3
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven
+
+      - name: 🔨 Construir aplicación (sin tests)
+        run: mvn clean package -DskipTests
+
+      - name: 📦 Subir artefacto JAR
+        uses: actions/upload-artifact@v3
+        with:
+          name: spring-boot-app
+          path: target/*.jar
+
+      - name: ✅ Deploy Phase completada
+        run: echo "📦 Application packaged successfully"
+
+  # ========================================
+  # GREEN PHASE: Post-Deploy Testing
+  # Tests end-to-end en el entorno desplegado
+  # ========================================
+  green-phase:
+    name: "🟢 Green Phase - Post-Deploy Tests"
+    runs-on: ubuntu-latest
+    needs: [blue-phase, deploy-phase]
+    
+    steps:
+      - name: 📥 Checkout código
+        uses: actions/checkout@v4
+
+      - name: ☕ Configurar JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: 📦 Cache del repositorio Maven
+        uses: actions/cache@v3
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven
+
+      - name: 📥 Descargar artefacto JAR
+        uses: actions/download-artifact@v3
+        with:
+          name: spring-boot-app
+          path: target/
+
+      - name: 🌐 Instalar Google Chrome
+        run: |
+          wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
+          sudo sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list'
+          sudo apt-get update
+          sudo apt-get install -y google-chrome-stable
+
+      - name: 🖥️ Configurar Xvfb (Display Virtual)
+        run: |
+          sudo apt-get install -y xvfb
+          export DISPLAY=:99
+          Xvfb :99 -screen 0 1920x1080x24 > /dev/null 2>&1 &
+
+      - name: 🚀 Iniciar aplicación Spring Boot (Green Environment)
+        run: |
+          java -jar target/*.jar &
+          echo $! > app.pid
+          sleep 30  # Esperar a que la aplicación arranque
+        env:
+          CI: true
+
+      - name: 🔍 Verificar que la aplicación esté corriendo
+        run: |
+          timeout 60 bash -c 'until curl -f http://localhost:8080; do sleep 2; done'
+          echo "✅ Application is running and responding"
+
+      - name: 🧪 Ejecutar tests de integración (Green Phase)
+        run: mvn test -Pintegration-tests -Dheadless=true
+        env:
+          CI: true
+          DISPLAY: :99
+
+      - name: 🛑 Detener aplicación Spring Boot
+        if: always()
+        run: |
+          if [ -f app.pid ]; then
+            kill $(cat app.pid) || true
+            rm app.pid
+          fi
+
+      - name: 📊 Subir reportes de tests de integración
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: green-phase-test-reports
+          path: target/surefire-reports/
+
+      - name: ✅ Green Phase completada
+        run: echo "🟢 Green Phase tests passed - Deployment validated successfully"
+
+  # ========================================
+  # DEPLOYMENT STATUS: Final Status Report
+  # Resumen final del deployment Blue-Green
+  # ========================================
+  deployment-status:
+    name: "📋 Deployment Status Report"
+    runs-on: ubuntu-latest
+    needs: [blue-phase, deploy-phase, green-phase]
+    if: always()
+    
+    steps:
+      - name: 📊 Evaluating deployment status
+        run: |
+          echo "==================================="
+          echo "🔵🟢 BLUE-GREEN DEPLOYMENT REPORT"
+          echo "==================================="
+          echo "Blue Phase (Pre-Deploy): ${{ needs.blue-phase.result }}"
+          echo "Deploy Phase (Build): ${{ needs.deploy-phase.result }}"
+          echo "Green Phase (Post-Deploy): ${{ needs.green-phase.result }}"
+          echo "==================================="
+          
+          if [[ "${{ needs.blue-phase.result }}" == "success" && "${{ needs.deploy-phase.result }}" == "success" && "${{ needs.green-phase.result }}" == "success" ]]; then
+            echo "✅ DEPLOYMENT SUCCESSFUL - All phases completed"
+            echo "🎉 Application ready for production"
+          else
+            echo "❌ DEPLOYMENT FAILED - Check phase results"
+            exit 1
+          fi

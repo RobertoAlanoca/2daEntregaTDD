@@ -9,8 +9,10 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.JavascriptExecutor;
 import java.time.Duration;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -23,11 +25,21 @@ public class SeleniumTest {
     public static void setupClass() {
         // WebDriverManager descarga automáticamente la versión correcta de ChromeDriver
         WebDriverManager.chromedriver().setup();
-    }
-
-    @BeforeEach
+    }    @BeforeEach
     public void setup() {
-        driver = new ChromeDriver();
+        ChromeOptions options = new ChromeOptions();
+        
+        // Configurar para CI/CD (modo headless si se detecta)
+        String isCI = System.getenv("CI");
+        if ("true".equals(isCI) || System.getProperty("headless") != null) {
+            options.addArguments("--headless");
+            options.addArguments("--no-sandbox");
+            options.addArguments("--disable-dev-shm-usage");
+            options.addArguments("--disable-gpu");
+            options.addArguments("--window-size=1920,1080");
+        }
+        
+        driver = new ChromeDriver(options);
         wait = new WebDriverWait(driver, Duration.ofSeconds(10));
     }
 
@@ -89,10 +101,10 @@ public class SeleniumTest {
         // === 5. Resetear y hacer logout ===
         WebElement resetButton = driver.findElement(By.id("reset"));
         resetButton.click();
-        Thread.sleep(2000);
-          // Hacer logout al final del test
+        Thread.sleep(2000);        
+        // Hacer logout al final del test (usando JavaScript para evitar intercepción)
         WebElement logoutButton = driver.findElement(By.id("logout-btn"));
-        logoutButton.click();
+        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", logoutButton);
         // Espera a que redirija al login
         wait.until(ExpectedConditions.urlContains("/"));
         Thread.sleep(2000);
