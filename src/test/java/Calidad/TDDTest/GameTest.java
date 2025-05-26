@@ -134,7 +134,7 @@ public class GameTest {
     }
     public void testDiagonalWin() { // Req3 Prueba 4
         Game game = new Game();
-        game.placePiece(0, 0); // X
+        game.placePiece(0, -1); // X
         game.placePiece(0, 1); // O
         game.placePiece(1, 1); // X
         game.placePiece(1, 0); // O
