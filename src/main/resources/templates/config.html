@@ -6,276 +6,318 @@
     <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
-    <button class="theme-toggle">🌙 Tema Oscuro</button>
-      <nav class="navbar">
-        <div class="nav-buttons">
-            <a href="/menu" class="btn btn-secondary">🏠 Menú</a>
-            <a href="/game" class="btn btn-secondary">🎯 Jugar</a>
-            <a href="/history" class="btn btn-secondary">📊 Historial</a>
-            <a href="/info" class="btn btn-secondary">ℹ️ Información</a>
-        </div>
-    </nav>
+<button class="theme-toggle">🌙 Tema Oscuro</button>
+<nav class="navbar">
+    <div class="nav-buttons">
+        <a href="/menu" class="btn btn-secondary">🏠 Menú</a>
+        <a href="/game" class="btn btn-secondary">🎯 Jugar</a>
+        <a href="/history" class="btn btn-secondary">📊 Historial</a>
+        <a href="/info" class="btn btn-secondary">ℹ️ Información</a>
+    </div>
+</nav>
 
-    <div class="config-section">
-        <h1>⚙️ Configuración del Juego</h1>
-        
-        <!-- Símbolos de Jugadores -->
-        <h2>🎭 Símbolos de Jugadores</h2>
-        
-        <h3>Jugador 1:</h3>
-        <div id="player1-symbols" class="symbol-picker"></div>
-        
-        <h3>Jugador 2:</h3>
-        <div id="player2-symbols" class="symbol-picker"></div>
-        
-        <!-- Colores de Jugadores -->
-        <h2>🎨 Colores de Jugadores</h2>
-        
-        <h3>Color Jugador 1:</h3>
-        <div id="player1-colors" class="color-picker"></div>
-        
-        <h3>Color Jugador 2:</h3>
-        <div id="player2-colors" class="color-picker"></div>
-        
-        <!-- Colores del Tablero -->
-        <h2>🎨 Colores del Entorno</h2>
-        
-        <h3>Color del Tablero:</h3>
-        <div id="board-colors" class="color-picker"></div>
-        
-        <h3>Color de Fondo:</h3>
-        <div id="background-colors" class="color-picker"></div>
-        
-        <!-- Vista Previa -->
-        <h2>👁️ Vista Previa</h2>
-        <div style="margin: 2rem 0;">
-            <div id="preview-board" style="display: grid; grid-template-columns: repeat(3, 60px); grid-gap: 5px; justify-content: center; margin: 20px auto;">
-                <div class="preview-cell">X</div>
-                <div class="preview-cell">O</div>
-                <div class="preview-cell"></div>
-                <div class="preview-cell">O</div>
-                <div class="preview-cell">X</div>
-                <div class="preview-cell"></div>
-                <div class="preview-cell"></div>
-                <div class="preview-cell"></div>
-                <div class="preview-cell">X</div>
-            </div>
-        </div>
-        
-        <!-- Botones de Acción -->
-        <div style="margin: 2rem 0;">
-            <button id="reset-config" class="btn btn-secondary">🔄 Restaurar Predeterminados</button>
-            <button id="save-config" class="btn">💾 Guardar Configuración</button>
-        </div>
-        
-        <div id="save-message" style="margin: 1rem 0; font-weight: bold; opacity: 0; transition: opacity 0.3s;"></div>
-        
-        <div style="margin: 2rem 0;">
-            <a href="/game" class="btn" style="font-size: 1.1em;">
-                🎮 Probar en el Juego
-            </a>
+<div class="config-section">
+    <h1>⚙️ Configuración del Juego</h1>
+
+    <!-- Símbolos de Jugadores -->
+    <h2>🎭 Símbolos de Jugadores</h2>
+
+    <h3>Jugador 1:</h3>
+    <div id="player1-symbols" class="symbol-picker"></div>
+
+    <h3>Jugador 2:</h3>
+    <div id="player2-symbols" class="symbol-picker"></div>
+
+    <!-- Colores de Jugadores -->
+    <h2>🎨 Colores de Jugadores</h2>
+
+    <h3>Color Jugador 1:</h3>
+    <div id="player1-colors" class="color-picker"></div>
+
+    <h3>Color Jugador 2:</h3>
+    <div id="player2-colors" class="color-picker"></div>
+
+    <!-- Colores del Tablero -->
+    <h2>🎨 Colores del Entorno</h2>
+
+    <h3>Color del Tablero:</h3>
+    <div id="board-colors" class="color-picker"></div>
+
+    <h3>Color de Fondo:</h3>
+    <div id="background-colors" class="color-picker"></div>
+
+    <!-- Vista Previa -->
+    <h2>👁️ Vista Previa</h2>
+    <div style="margin: 2rem 0;">
+        <div id="preview-board"
+             style="display: grid; grid-template-columns: repeat(3, 60px); grid-gap: 5px; justify-content: center; margin: 20px auto;">
+            <div class="preview-cell">X</div>
+            <div class="preview-cell">O</div>
+            <div class="preview-cell"></div>
+            <div class="preview-cell">O</div>
+            <div class="preview-cell">X</div>
+            <div class="preview-cell"></div>
+            <div class="preview-cell"></div>
+            <div class="preview-cell"></div>
+            <div class="preview-cell">X</div>
         </div>
     </div>
 
-    <script src="/common.js"></script>
-    <script>
-        // Elementos de la página
-        const player1SymbolsDiv = document.getElementById('player1-symbols');
-        const player2SymbolsDiv = document.getElementById('player2-symbols');
-        const player1ColorsDiv = document.getElementById('player1-colors');
-        const player2ColorsDiv = document.getElementById('player2-colors');
-        const boardColorsDiv = document.getElementById('board-colors');
-        const backgroundColorsDiv = document.getElementById('background-colors');
-        const previewBoard = document.getElementById('preview-board');
-        const saveMessage = document.getElementById('save-message');
-        
-        // Configuración actual
-        let currentConfig = {
-            player1Symbol: loadConfig('player1Symbol', defaultConfig.player1Symbol),
-            player2Symbol: loadConfig('player2Symbol', defaultConfig.player2Symbol),
-            player1Color: loadConfig('player1Color', defaultConfig.player1Color),
-            player2Color: loadConfig('player2Color', defaultConfig.player2Color),
-            boardColor: loadConfig('boardColor', defaultConfig.boardColor),
-            backgroundColor: loadConfig('backgroundColor', defaultConfig.backgroundColor)
-        };
-        
-        // Crear selectores de símbolos
-        function createSymbolPickers() {
-            availableSymbols.forEach(symbolObj => {
-                // Jugador 1
-                const symbol1 = document.createElement('div');
-                symbol1.className = 'symbol-option';
-                symbol1.textContent = symbolObj.symbol;
-                symbol1.title = symbolObj.name;
-                if (symbolObj.symbol === currentConfig.player1Symbol) {
-                    symbol1.classList.add('selected');
-                }
-                symbol1.onclick = () => selectSymbol('player1', symbolObj.symbol, symbol1);
-                player1SymbolsDiv.appendChild(symbol1);
-                
-                // Jugador 2
-                const symbol2 = document.createElement('div');
-                symbol2.className = 'symbol-option';
-                symbol2.textContent = symbolObj.symbol;
-                symbol2.title = symbolObj.name;
-                if (symbolObj.symbol === currentConfig.player2Symbol) {
-                    symbol2.classList.add('selected');
-                }
-                symbol2.onclick = () => selectSymbol('player2', symbolObj.symbol, symbol2);
-                player2SymbolsDiv.appendChild(symbol2);
-            });
-        }
-        
-        // Crear selectores de colores
-        function createColorPickers() {
-            availableColors.forEach(color => {
-                // Colores jugador 1
-                const color1 = document.createElement('div');
-                color1.className = 'color-option';
-                color1.style.backgroundColor = color;
-                if (color === currentConfig.player1Color) {
-                    color1.classList.add('selected');
-                }
-                color1.onclick = () => selectColor('player1Color', color, color1);
-                player1ColorsDiv.appendChild(color1);
-                
-                // Colores jugador 2
-                const color2 = document.createElement('div');
-                color2.className = 'color-option';
-                color2.style.backgroundColor = color;
-                if (color === currentConfig.player2Color) {
-                    color2.classList.add('selected');
-                }
-                color2.onclick = () => selectColor('player2Color', color, color2);
-                player2ColorsDiv.appendChild(color2);
-                
-                // Colores del tablero
-                const colorBoard = document.createElement('div');
-                colorBoard.className = 'color-option';
-                colorBoard.style.backgroundColor = color;
-                if (color === currentConfig.boardColor) {
-                    colorBoard.classList.add('selected');
-                }
-                colorBoard.onclick = () => selectColor('boardColor', color, colorBoard);
-                boardColorsDiv.appendChild(colorBoard);
-                
-                // Colores del fondo
-                const colorBg = document.createElement('div');
-                colorBg.className = 'color-option';
-                colorBg.style.backgroundColor = color;
-                if (color === currentConfig.backgroundColor) {
-                    colorBg.classList.add('selected');
-                }
-                colorBg.onclick = () => selectColor('backgroundColor', color, colorBg);
-                backgroundColorsDiv.appendChild(colorBg);
-            });
-        }
-        
-        // Seleccionar símbolo
-        function selectSymbol(player, symbol, element) {
-            currentConfig[player + 'Symbol'] = symbol;
-            
-            // Quitar selección anterior
-            const container = element.parentNode;
-            container.querySelectorAll('.symbol-option').forEach(opt => opt.classList.remove('selected'));
-            
-            // Agregar nueva selección
-            element.classList.add('selected');
-            
-            updatePreview();
-        }
-        
-        // Seleccionar color
-        function selectColor(configKey, color, element) {
-            currentConfig[configKey] = color;
-            
-            // Quitar selección anterior
-            const container = element.parentNode;
-            container.querySelectorAll('.color-option').forEach(opt => opt.classList.remove('selected'));
-            
-            // Agregar nueva selección
-            element.classList.add('selected');
-            
-            updatePreview();
-        }
-        
-        // Actualizar vista previa
-        function updatePreview() {
-            const cells = previewBoard.querySelectorAll('.preview-cell');
-            
-            // Aplicar estilos
-            previewBoard.style.backgroundColor = currentConfig.backgroundColor;
-            
-            cells.forEach((cell, index) => {
-                cell.style.backgroundColor = currentConfig.boardColor;
-                cell.style.width = '60px';
-                cell.style.height = '60px';
-                cell.style.display = 'flex';
-                cell.style.alignItems = 'center';
-                cell.style.justifyContent = 'center';
-                cell.style.fontSize = '1.5em';
-                cell.style.border = '2px solid #333';
-                
-                if (cell.textContent === 'X') {
-                    cell.style.color = currentConfig.player1Color;
-                    cell.textContent = currentConfig.player1Symbol;
-                } else if (cell.textContent === 'O') {
-                    cell.style.color = currentConfig.player2Color;
-                    cell.textContent = currentConfig.player2Symbol;
-                }
-            });
-        }
-        
-        // Guardar configuración
-        function saveConfiguration() {
-            Object.keys(currentConfig).forEach(key => {
-                saveConfig(key, currentConfig[key]);
-            });
-            
-            showSaveMessage('✅ Configuración guardada correctamente', 'green');
-            
-            // Aplicar cambios inmediatamente
-            applyVisualConfig();
-        }
-        
-        // Restaurar configuración predeterminada
-        function resetConfiguration() {
-            currentConfig = { ...defaultConfig };
-            
-            // Limpiar y recrear selectores
-            player1SymbolsDiv.innerHTML = '';
-            player2SymbolsDiv.innerHTML = '';
-            player1ColorsDiv.innerHTML = '';
-            player2ColorsDiv.innerHTML = '';
-            boardColorsDiv.innerHTML = '';
-            backgroundColorsDiv.innerHTML = '';
-            
-            createSymbolPickers();
-            createColorPickers();
-            updatePreview();
-            
-            showSaveMessage('🔄 Configuración restaurada a valores predeterminados', 'orange');
-        }
-        
-        // Mostrar mensaje de guardado
-        function showSaveMessage(message, color) {
-            saveMessage.textContent = message;
-            saveMessage.style.color = color;
-            saveMessage.style.opacity = '1';
-            
-            setTimeout(() => {
-                saveMessage.style.opacity = '0';
-            }, 3000);
-        }
-        
-        // Event listeners
-        document.getElementById('save-config').onclick = saveConfiguration;
-        document.getElementById('reset-config').onclick = resetConfiguration;
-        
-        // Inicializar
+    <!-- Botones de Acción -->
+    <div style="margin: 2rem 0;">
+        <button id="reset-config" class="btn btn-secondary">🔄 Restaurar Predeterminados</button>
+        <button id="save-config" class="btn">💾 Guardar Configuración</button>
+    </div>
+
+    <div id="save-message" style="margin: 1rem 0; font-weight: bold; opacity: 0; transition: opacity 0.3s;"></div>
+
+    <div style="margin: 2rem 0;">
+        <a href="/game" class="btn" style="font-size: 1.1em;">
+            🎮 Probar en el Juego
+        </a>
+    </div>
+</div>
+
+<script src="/common.js"></script>
+<script>
+    // Símbolos disponibles
+const availableSymbols = [
+{ symbol: 'X', name: 'Cruz' },
+{ symbol: 'O', name: 'Círculo' },
+{ symbol: '★', name: 'Estrella' },
+{ symbol: '✿', name: 'Flor' },
+{ symbol: '⚽', name: 'Pelota' },
+{ symbol: '🐱', name: 'Gato' }
+];
+
+// Colores disponibles
+const availableColors = [
+'#FF0000', '#00FF00', '#0000FF',
+'#FFFF00', '#FF00FF', '#00FFFF',
+'#000000', '#FFFFFF', '#FFA500'
+];
+
+// Configuración por defecto
+const defaultConfig = {
+player1Symbol: 'X',
+player2Symbol: 'O',
+player1Color: '#FF0000',
+player2Color: '#0000FF',
+boardColor: '#FFFFFF',
+backgroundColor: '#DDDDDD'
+};
+
+// Funciones utilitarias
+function loadConfig(key, defaultValue) {
+return localStorage.getItem(key) || defaultValue;
+}
+
+function saveConfig(key, value) {
+localStorage.setItem(key, value);
+}
+
+// (Opcional) Aplicar configuración visual general
+function applyVisualConfig() {
+document.body.style.backgroundColor = loadConfig('backgroundColor', defaultConfig.backgroundColor);
+}
+    // Elementos de la página
+    const player1SymbolsDiv = document.getElementById('player1-symbols');
+    const player2SymbolsDiv = document.getElementById('player2-symbols');
+    const player1ColorsDiv = document.getElementById('player1-colors');
+    const player2ColorsDiv = document.getElementById('player2-colors');
+    const boardColorsDiv = document.getElementById('board-colors');
+    const backgroundColorsDiv = document.getElementById('background-colors');
+    const previewBoard = document.getElementById('preview-board');
+    const saveMessage = document.getElementById('save-message');
+
+    // Configuración actual
+    let currentConfig = {
+        player1Symbol: loadConfig('player1Symbol', defaultConfig.player1Symbol),
+        player2Symbol: loadConfig('player2Symbol', defaultConfig.player2Symbol),
+        player1Color: loadConfig('player1Color', defaultConfig.player1Color),
+        player2Color: loadConfig('player2Color', defaultConfig.player2Color),
+        boardColor: loadConfig('boardColor', defaultConfig.boardColor),
+        backgroundColor: loadConfig('backgroundColor', defaultConfig.backgroundColor)
+    };
+
+    // Crear selectores de símbolos
+    function createSymbolPickers() {
+        availableSymbols.forEach(symbolObj => {
+            // Jugador 1
+            const symbol1 = document.createElement('div');
+            symbol1.className = 'symbol-option';
+            symbol1.textContent = symbolObj.symbol;
+            symbol1.title = symbolObj.name;
+            if (symbolObj.symbol === currentConfig.player1Symbol) {
+                symbol1.classList.add('selected');
+            }
+            symbol1.onclick = () => selectSymbol('player1', symbolObj.symbol, symbol1);
+            player1SymbolsDiv.appendChild(symbol1);
+
+            // Jugador 2
+            const symbol2 = document.createElement('div');
+            symbol2.className = 'symbol-option';
+            symbol2.textContent = symbolObj.symbol;
+            symbol2.title = symbolObj.name;
+            if (symbolObj.symbol === currentConfig.player2Symbol) {
+                symbol2.classList.add('selected');
+            }
+            symbol2.onclick = () => selectSymbol('player2', symbolObj.symbol, symbol2);
+            player2SymbolsDiv.appendChild(symbol2);
+        });
+    }
+
+    // Crear selectores de colores
+    function createColorPickers() {
+        availableColors.forEach(color => {
+            // Colores jugador 1
+            const color1 = document.createElement('div');
+            color1.className = 'color-option';
+            color1.style.backgroundColor = color;
+            if (color === currentConfig.player1Color) {
+                color1.classList.add('selected');
+            }
+            color1.onclick = () => selectColor('player1Color', color, color1);
+            player1ColorsDiv.appendChild(color1);
+
+            // Colores jugador 2
+            const color2 = document.createElement('div');
+            color2.className = 'color-option';
+            color2.style.backgroundColor = color;
+            if (color === currentConfig.player2Color) {
+                color2.classList.add('selected');
+            }
+            color2.onclick = () => selectColor('player2Color', color, color2);
+            player2ColorsDiv.appendChild(color2);
+
+            // Colores del tablero
+            const colorBoard = document.createElement('div');
+            colorBoard.className = 'color-option';
+            colorBoard.style.backgroundColor = color;
+            if (color === currentConfig.boardColor) {
+                colorBoard.classList.add('selected');
+            }
+            colorBoard.onclick = () => selectColor('boardColor', color, colorBoard);
+            boardColorsDiv.appendChild(colorBoard);
+
+            // Colores del fondo
+            const colorBg = document.createElement('div');
+            colorBg.className = 'color-option';
+            colorBg.style.backgroundColor = color;
+            if (color === currentConfig.backgroundColor) {
+                colorBg.classList.add('selected');
+            }
+            colorBg.onclick = () => selectColor('backgroundColor', color, colorBg);
+            backgroundColorsDiv.appendChild(colorBg);
+        });
+    }
+
+    // Seleccionar símbolo
+    function selectSymbol(player, symbol, element) {
+        currentConfig[player + 'Symbol'] = symbol;
+
+        // Quitar selección anterior
+        const container = element.parentNode;
+        container.querySelectorAll('.symbol-option').forEach(opt => opt.classList.remove('selected'));
+
+        // Agregar nueva selección
+        element.classList.add('selected');
+
+        updatePreview();
+    }
+
+    // Seleccionar color
+    function selectColor(configKey, color, element) {
+        currentConfig[configKey] = color;
+
+        // Quitar selección anterior
+        const container = element.parentNode;
+        container.querySelectorAll('.color-option').forEach(opt => opt.classList.remove('selected'));
+
+        // Agregar nueva selección
+        element.classList.add('selected');
+
+        updatePreview();
+    }
+
+    // Actualizar vista previa
+    function updatePreview() {
+        const cells = previewBoard.querySelectorAll('.preview-cell');
+
+        // Aplicar estilos
+        previewBoard.style.backgroundColor = currentConfig.backgroundColor;
+
+        cells.forEach((cell, index) => {
+            cell.style.backgroundColor = currentConfig.boardColor;
+            cell.style.width = '60px';
+            cell.style.height = '60px';
+            cell.style.display = 'flex';
+            cell.style.alignItems = 'center';
+            cell.style.justifyContent = 'center';
+            cell.style.fontSize = '1.5em';
+            cell.style.border = '2px solid #333';
+
+            if (cell.textContent === 'X') {
+                cell.style.color = currentConfig.player1Color;
+                cell.textContent = currentConfig.player1Symbol;
+            } else if (cell.textContent === 'O') {
+                cell.style.color = currentConfig.player2Color;
+                cell.textContent = currentConfig.player2Symbol;
+            }
+        });
+    }
+
+    // Guardar configuración
+    function saveConfiguration() {
+        Object.keys(currentConfig).forEach(key => {
+            saveConfig(key, currentConfig[key]);
+        });
+
+        showSaveMessage('✅ Configuración guardada correctamente', 'green');
+
+        // Aplicar cambios inmediatamente
+        applyVisualConfig();
+    }
+
+    // Restaurar configuración predeterminada
+    function resetConfiguration() {
+        currentConfig = { ...defaultConfig };
+
+        // Limpiar y recrear selectores
+        player1SymbolsDiv.innerHTML = '';
+        player2SymbolsDiv.innerHTML = '';
+        player1ColorsDiv.innerHTML = '';
+        player2ColorsDiv.innerHTML = '';
+        boardColorsDiv.innerHTML = '';
+        backgroundColorsDiv.innerHTML = '';
+
         createSymbolPickers();
         createColorPickers();
         updatePreview();
-    </script>
+
+        showSaveMessage('🔄 Configuración restaurada a valores predeterminados', 'orange');
+    }
+
+    // Mostrar mensaje de guardado
+    function showSaveMessage(message, color) {
+        saveMessage.textContent = message;
+        saveMessage.style.color = color;
+        saveMessage.style.opacity = '1';
+
+        setTimeout(() => {
+            saveMessage.style.opacity = '0';
+        }, 3000);
+    }
+
+    // Event listeners
+    document.getElementById('save-config').onclick = saveConfiguration;
+    document.getElementById('reset-config').onclick = resetConfiguration;
+
+    // Inicializar
+    createSymbolPickers();
+    createColorPickers();
+    updatePreview();
+
+</script>
 </body>
 </html>

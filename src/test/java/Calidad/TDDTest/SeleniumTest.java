@@ -18,7 +18,7 @@ import java.time.Duration;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class SeleniumTest {
-    private WebDriver driver;
+   private WebDriver driver;
     private WebDriverWait wait;
 
     @BeforeAll
@@ -55,27 +55,27 @@ public class SeleniumTest {
         String title = driver.getTitle();
         assertTrue(title.contains("Tres en Raya"));
         Thread.sleep(2000);
-        
+
         // === 2. Login como admin ===
         WebElement usernameField = wait.until(ExpectedConditions.presenceOfElementLocated(By.id("username")));
         WebElement passwordField = driver.findElement(By.id("password"));
         WebElement loginButton = driver.findElement(By.id("login-btn"));
-        
+
         usernameField.clear();
         usernameField.sendKeys("admin");
         passwordField.clear();
         passwordField.sendKeys("admin");
           loginButton.click();
-        
+
         // Esperar a que redirija al menú
         wait.until(ExpectedConditions.urlContains("/menu"));
         assertTrue(driver.getCurrentUrl().contains("/menu"));
         Thread.sleep(2000);
-        
+
         // === 3. Navegar al juego ===
         WebElement playLink = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@href='/game' and contains(text(), 'Jugar')]")));
         playLink.click();
-        
+
         // Esperar a que cargue la página del juego
         wait.until(ExpectedConditions.urlContains("/game"));
         assertTrue(driver.getCurrentUrl().contains("/game"));        // Verificar que el tablero existe
@@ -109,4 +109,5 @@ public class SeleniumTest {
         wait.until(ExpectedConditions.urlContains("/"));
         Thread.sleep(2000);
     }
+
 }
