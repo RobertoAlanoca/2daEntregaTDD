@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Tres en Raya - Menú Principal</title>
+    <link rel="stylesheet" href="/styles.css">
+    <style>
+        .menu-container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .menu-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            align-items: center;
+            margin: 3rem 0;
+        }
+
+        .menu-btn {
+            font-size: 1.2em;
+            padding: 1rem 2rem;
+            min-width: 300px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        .welcome-text {
+            font-size: 1.1em;
+            margin: 2rem 0;
+            opacity: 0.8;
+        }
+    </style>
+</head>
+<body>
+<button class="theme-toggle">🌙 Tema Oscuro</button>
+
+<div class="menu-container">
+    <h1>🎮 Tres en Raya</h1>
+    <p class="welcome-text">¡Bienvenido al clásico juego de Tres en Raya! Personaliza tu experiencia y disfruta jugando.</p>
+
+    <div class="menu-buttons">
+        <a href="/game" class="btn menu-btn">
+            🎯 Jugar
+        </a>
+
+        <a href="/config" class="btn menu-btn">
+            ⚙️ Configuración
+        </a>
+
+        <a href="/history" class="btn menu-btn">
+            📊 Historial
+        </a>
+
+        <a href="/info" class="btn menu-btn">
+            ℹ️ Información y Ayuda
+        </a>
+    </div>
+
+    <div class="welcome-text">
+        <p>🎨 Personaliza colores y símbolos</p>
+        <p>📈 Revisa tu historial de partidas</p>
+        <p>🌙 Cambia entre tema claro y oscuro</p>
+    </div>
+</div>
+
+<script src="/common.js"></script>
+</body>
+</html>

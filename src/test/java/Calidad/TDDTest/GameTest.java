@@ -8,7 +8,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class GameTest {
 
-
     // --- Requerimiento 1 ---
 
     @Test
@@ -42,7 +41,7 @@ public class GameTest {
         System.out.println("\n--- Posicion ocupada ---\n");
         assertEquals("Posición ocupada", exception.getMessage());
     }
-    // --- Requerimiento 1 ---
+    // --- Requerimiento 2 ---
     @Test
     void primerTurnoSiempreEsX() {
         Game game = new Game();
@@ -64,6 +63,7 @@ public class GameTest {
         System.out.println("\n--- Ahora juega X ---\n");
         assertEquals("X", game.getCurrentPlayer(), "Después de O debe jugar X");
     }
+    // --- Requerimiento 3 ---
     @Test
     public void testNoWinnerAtStart() {// Prueba exitosa Req3 Prueba 1
         Game game = new Game();
