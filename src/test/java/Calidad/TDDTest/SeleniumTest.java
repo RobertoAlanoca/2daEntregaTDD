@@ -1,4 +1,4 @@
-/*package Calidad.TDDTest;
+package Calidad.TDDTest;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.junit.jupiter.api.AfterEach;
@@ -9,6 +9,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import java.time.Duration;
@@ -27,7 +28,15 @@ public class SeleniumTest {
 
     @BeforeEach
     public void setup() {
-        driver = new ChromeDriver();
+        ChromeOptions options = new ChromeOptions();
+        options.addArguments("--headless=new"); // Modo sin interfaz gráfica (imprescindible en CI)
+        options.addArguments("--no-sandbox");   // Requerido para evitar errores en contenedores
+        options.addArguments("--disable-dev-shm-usage"); // Evita uso excesivo de /dev/shm
+        options.addArguments("--disable-gpu");  // Recomendado en entornos sin GPU
+        options.addArguments("--remote-allow-origins=*"); // A veces necesario por políticas de CORS
+        options.addArguments("--user-data-dir=/tmp/chrome-user-data-" + System.currentTimeMillis()); // Directorio temporal único
+
+        driver = new ChromeDriver(options);
         wait = new WebDriverWait(driver, Duration.ofSeconds(10));
     }
 
@@ -98,4 +107,3 @@ public class SeleniumTest {
         Thread.sleep(2000);
     }
 }
-*/
