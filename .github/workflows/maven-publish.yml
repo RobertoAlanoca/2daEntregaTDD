@@ -26,7 +26,7 @@ jobs:
           distribution: 'temurin'
 
       - name: 📦 Cache del repositorio Maven
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: ~/.m2
           key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
@@ -43,7 +43,7 @@ jobs:
 
       - name: 📊 Subir reportes de tests unitarios
         if: always()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: blue-phase-test-reports
           path: target/surefire-reports/
@@ -71,7 +71,7 @@ jobs:
           distribution: 'temurin'
 
       - name: 📦 Cache del repositorio Maven
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: ~/.m2
           key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
@@ -82,7 +82,7 @@ jobs:
         run: mvn clean package -DskipTests
 
       - name: 📦 Subir artefacto JAR
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: spring-boot-app
           path: target/*.jar
@@ -110,7 +110,7 @@ jobs:
           distribution: 'temurin'
 
       - name: 📦 Cache del repositorio Maven
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: ~/.m2
           key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
@@ -118,7 +118,7 @@ jobs:
             ${{ runner.os }}-maven
 
       - name: 📥 Descargar artefacto JAR
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: spring-boot-app
           path: target/
@@ -165,7 +165,7 @@ jobs:
 
       - name: 📊 Subir reportes de tests de integración
         if: always()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: green-phase-test-reports
           path: target/surefire-reports/
