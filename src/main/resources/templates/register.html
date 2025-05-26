@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Tres en Raya - Registro</title>
+    <link rel="stylesheet" href="/styles.css">
+    <style>
+        .register-container {
+            max-width: 450px;
+            margin: 0 auto;
+            padding: 2rem;
+            margin-top: 3rem;
+        }
+        
+        .register-box {
+            background: #fff;
+            padding: 3rem 2rem;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            border: 1px solid #ddd;
+        }
+        
+        .register-title {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: #333;
+            font-size: 2em;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+            color: #555;
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1em;
+            transition: border-color 0.3s ease;
+            box-sizing: border-box;
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: #007bff;
+        }
+        
+        .form-input.error {
+            border-color: #dc3545;
+        }
+        
+        .form-input.success {
+            border-color: #28a745;
+        }
+        
+        .register-btn {
+            width: 100%;
+            padding: 15px;
+            font-size: 1.1em;
+            background: #28a745;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            margin-top: 1rem;
+        }
+        
+        .register-btn:hover {
+            background: #218838;
+        }
+        
+        .register-btn:disabled {
+            background: #6c757d;
+            cursor: not-allowed;
+        }
+        
+        .error-message, .success-message {
+            font-size: 0.85em;
+            margin-top: 0.3rem;
+            display: none;
+        }
+        
+        .error-message {
+            color: #dc3545;
+        }
+        
+        .success-message {
+            color: #28a745;
+        }
+        
+        .password-requirements {
+            background: #f8f9fa;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-top: 0.5rem;
+            border-left: 4px solid #17a2b8;
+            font-size: 0.85em;
+        }
+        
+        .password-requirements h5 {
+            margin: 0 0 0.5rem 0;
+            color: #17a2b8;
+        }
+        
+        .requirement {
+            display: flex;
+            align-items: center;
+            margin: 0.25rem 0;
+            color: #6c757d;
+        }
+        
+        .requirement.valid {
+            color: #28a745;
+        }
+        
+        .requirement .icon {
+            margin-right: 0.5rem;
+            font-weight: bold;
+        }
+        
+        .login-link {
+            text-align: center;
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid #ddd;
+        }
+        
+        .login-link a {
+            color: #007bff;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        
+        .login-link a:hover {
+            text-decoration: underline;
+        }
+        
+        /* Tema oscuro */
+        body.dark-theme .register-box {
+            background: #2d2d2d;
+            border-color: #444;
+        }
+        
+        body.dark-theme .register-title {
+            color: #e0e0e0;
+        }
+        
+        body.dark-theme .form-label {
+            color: #ccc;
+        }
+        
+        body.dark-theme .form-input {
+            background: #1a1a1a;
+            border-color: #555;
+            color: #e0e0e0;
+        }
+        
+        body.dark-theme .form-input:focus {
+            border-color: #007bff;
+        }
+        
+        body.dark-theme .password-requirements {
+            background: #1a1a1a;
+            border-left-color: #17a2b8;
+        }
+        
+        body.dark-theme .login-link {
+            border-top-color: #444;
+        }
+        
+        body.dark-theme .login-link a {
+            color: #66b3ff;
+        }
+    </style>
+</head>
+<body>
+    <button class="theme-toggle">🌙 Tema Oscuro</button>
+    
+    <div class="register-container">
+        <div class="register-box">
+            <h1 class="register-title">📝 Crear Cuenta</h1>
+            <p style="text-align: center; margin-bottom: 2rem; color: #666;">
+                Únete a Tres en Raya y guarda tu progreso
+            </p>
+            
+            <form id="register-form">
+                <div class="form-group">
+                    <label for="fullname" class="form-label">👤 Nombre Completo:</label>
+                    <input type="text" id="fullname" name="fullname" class="form-input" 
+                           placeholder="Ingresa tu nombre completo" required>
+                    <div class="error-message" id="fullname-error"></div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="username" class="form-label">🔑 Usuario:</label>
+                    <input type="text" id="username" name="username" class="form-input" 
+                           placeholder="Elige un nombre de usuario" required>
+                    <div class="error-message" id="username-error"></div>
+                    <div class="success-message" id="username-success">✅ Usuario disponible</div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="email" class="form-label">📧 Email:</label>
+                    <input type="email" id="email" name="email" class="form-input" 
+                           placeholder="tu@email.com" required>
+                    <div class="error-message" id="email-error"></div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="password" class="form-label">🔒 Contraseña:</label>
+                    <input type="password" id="password" name="password" class="form-input" 
+                           placeholder="Crea una contraseña segura" required>
+                    <div class="error-message" id="password-error"></div>
+                    
+                    <div class="password-requirements">
+                        <h5>📋 Requisitos de contraseña:</h5>
+                        <div class="requirement" id="req-length">
+                            <span class="icon">❌</span>
+                            <span>Mínimo 6 caracteres</span>
+                        </div>
+                        <div class="requirement" id="req-letter">
+                            <span class="icon">❌</span>
+                            <span>Al menos una letra</span>
+                        </div>
+                        <div class="requirement" id="req-number">
+                            <span class="icon">❌</span>
+                            <span>Al menos un número</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="confirm-password" class="form-label">🔒 Confirmar Contraseña:</label>
+                    <input type="password" id="confirm-password" name="confirm-password" class="form-input" 
+                           placeholder="Repite tu contraseña" required>
+                    <div class="error-message" id="confirm-password-error"></div>
+                    <div class="success-message" id="confirm-password-success">✅ Las contraseñas coinciden</div>
+                </div>
+                
+                <button type="submit" class="register-btn" id="register-btn" disabled>
+                    🚀 Crear Cuenta
+                </button>
+            </form>
+            
+            <div class="login-link">
+                <p>¿Ya tienes una cuenta? <a href="/">Iniciar Sesión</a></p>
+            </div>
+        </div>
+    </div>
+
+    <script src="/common.js"></script>
+    <script>
+        // Elementos del formulario
+        const registerForm = document.getElementById('register-form');
+        const fullnameInput = document.getElementById('fullname');
+        const usernameInput = document.getElementById('username');
+        const emailInput = document.getElementById('email');
+        const passwordInput = document.getElementById('password');
+        const confirmPasswordInput = document.getElementById('confirm-password');
+        const registerBtn = document.getElementById('register-btn');
+        
+        // Elementos de validación
+        const reqLength = document.getElementById('req-length');
+        const reqLetter = document.getElementById('req-letter');
+        const reqNumber = document.getElementById('req-number');
+        
+        // Estado de validación
+        let validationState = {
+            fullname: false,
+            username: false,
+            email: false,
+            password: false,
+            confirmPassword: false
+        };
+          // Verificar si ya está autenticado
+        function isAuthenticated() {
+            return localStorage.getItem('isLoggedIn') === 'true';
+        }
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            if (isAuthenticated()) {
+                window.location.href = '/menu';
+            }
+        });
+          // Validación en tiempo real
+        fullnameInput.addEventListener('input', validateFullname);
+        usernameInput.addEventListener('input', debounce(validateUsername, 500));
+        emailInput.addEventListener('input', debounce(validateEmail, 500));
+        passwordInput.addEventListener('input', validatePassword);
+        confirmPasswordInput.addEventListener('input', validateConfirmPassword);
+        
+        // Función debounce para evitar demasiadas llamadas a la API
+        function debounce(func, wait) {
+            let timeout;
+            return function executedFunction(...args) {
+                const later = () => {
+                    clearTimeout(timeout);
+                    func(...args);
+                };
+                clearTimeout(timeout);
+                timeout = setTimeout(later, wait);
+            };
+        }
+        
+        // Validar nombre completo
+        function validateFullname() {
+            const fullname = fullnameInput.value.trim();
+            const errorDiv = document.getElementById('fullname-error');
+            
+            if (fullname.length < 2) {
+                showFieldError('fullname', 'El nombre debe tener al menos 2 caracteres');
+                validationState.fullname = false;
+            } else if (fullname.length > 50) {
+                showFieldError('fullname', 'El nombre no puede exceder 50 caracteres');
+                validationState.fullname = false;
+            } else {
+                showFieldSuccess('fullname');
+                validationState.fullname = true;
+            }
+            
+            updateRegisterButton();
+        }
+          // Validar nombre de usuario
+        async function validateUsername() {
+            const username = usernameInput.value.trim();
+            const errorDiv = document.getElementById('username-error');
+            const successDiv = document.getElementById('username-success');
+            
+            if (username.length < 3) {
+                showFieldError('username', 'El usuario debe tener al menos 3 caracteres');
+                validationState.username = false;
+                updateRegisterButton();
+                return;
+            } 
+            
+            if (username.length > 20) {
+                showFieldError('username', 'El usuario no puede exceder 20 caracteres');
+                validationState.username = false;
+                updateRegisterButton();
+                return;
+            } 
+            
+            if (!/^[a-zA-Z0-9_]+$/.test(username)) {
+                showFieldError('username', 'Solo se permiten letras, números y guiones bajos');
+                validationState.username = false;
+                updateRegisterButton();
+                return;
+            }
+            
+            // Verificar disponibilidad en el servidor
+            const taken = await isUsernameTaken(username);
+            if (taken) {
+                showFieldError('username', 'Este usuario ya está registrado');
+                successDiv.style.display = 'none';
+                validationState.username = false;
+            } else {
+                showFieldSuccess('username');
+                successDiv.style.display = 'block';
+                validationState.username = true;
+            }
+            
+            updateRegisterButton();
+        }
+          // Validar email
+        async function validateEmail() {
+            const email = emailInput.value.trim();
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            
+            if (!emailRegex.test(email)) {
+                showFieldError('email', 'Ingresa un email válido');
+                validationState.email = false;
+                updateRegisterButton();
+                return;
+            }
+            
+            // Verificar disponibilidad en el servidor
+            const taken = await isEmailTaken(email);
+            if (taken) {
+                showFieldError('email', 'Este email ya está registrado');
+                validationState.email = false;
+            } else {
+                showFieldSuccess('email');
+                validationState.email = true;
+            }
+            
+            updateRegisterButton();
+        }
+        
+        // Validar contraseña
+        function validatePassword() {
+            const password = passwordInput.value;
+            
+            // Validar longitud
+            if (password.length >= 6) {
+                updateRequirement(reqLength, true);
+            } else {
+                updateRequirement(reqLength, false);
+            }
+            
+            // Validar letra
+            if (/[a-zA-Z]/.test(password)) {
+                updateRequirement(reqLetter, true);
+            } else {
+                updateRequirement(reqLetter, false);
+            }
+            
+            // Validar número
+            if (/[0-9]/.test(password)) {
+                updateRequirement(reqNumber, true);
+            } else {
+                updateRequirement(reqNumber, false);
+            }
+            
+            // Validación general
+            const isValidPassword = password.length >= 6 && /[a-zA-Z]/.test(password) && /[0-9]/.test(password);
+            
+            if (isValidPassword) {
+                showFieldSuccess('password');
+                validationState.password = true;
+            } else {
+                passwordInput.classList.remove('success');
+                passwordInput.classList.add('error');
+                validationState.password = false;
+            }
+            
+            // Re-validar confirmación de contraseña
+            if (confirmPasswordInput.value) {
+                validateConfirmPassword();
+            }
+            
+            updateRegisterButton();
+        }
+        
+        // Validar confirmación de contraseña
+        function validateConfirmPassword() {
+            const password = passwordInput.value;
+            const confirmPassword = confirmPasswordInput.value;
+            const errorDiv = document.getElementById('confirm-password-error');
+            const successDiv = document.getElementById('confirm-password-success');
+            
+            if (confirmPassword !== password) {
+                showFieldError('confirm-password', 'Las contraseñas no coinciden');
+                successDiv.style.display = 'none';
+                validationState.confirmPassword = false;
+            } else if (confirmPassword.length > 0) {
+                showFieldSuccess('confirm-password');
+                successDiv.style.display = 'block';
+                validationState.confirmPassword = true;
+            } else {
+                validationState.confirmPassword = false;
+            }
+            
+            updateRegisterButton();
+        }
+        
+        // Actualizar requisito de contraseña
+        function updateRequirement(element, isValid) {
+            const icon = element.querySelector('.icon');
+            if (isValid) {
+                element.classList.add('valid');
+                icon.textContent = '✅';
+            } else {
+                element.classList.remove('valid');
+                icon.textContent = '❌';
+            }
+        }
+        
+        // Mostrar error en campo
+        function showFieldError(fieldName, message) {
+            const input = document.getElementById(fieldName);
+            const errorDiv = document.getElementById(fieldName + '-error');
+            const successDiv = document.getElementById(fieldName + '-success');
+            
+            input.classList.add('error');
+            input.classList.remove('success');
+            errorDiv.textContent = message;
+            errorDiv.style.display = 'block';
+            
+            if (successDiv) {
+                successDiv.style.display = 'none';
+            }
+        }
+        
+        // Mostrar éxito en campo
+        function showFieldSuccess(fieldName) {
+            const input = document.getElementById(fieldName);
+            const errorDiv = document.getElementById(fieldName + '-error');
+            
+            input.classList.add('success');
+            input.classList.remove('error');
+            errorDiv.style.display = 'none';
+        }
+          // Verificar si el usuario ya existe
+        async function isUsernameTaken(username) {
+            try {
+                const response = await fetch(`/api/auth/check-username/${encodeURIComponent(username)}`);
+                const data = await response.json();
+                return data.exists;
+            } catch (error) {
+                console.error('Error checking username:', error);
+                return false;
+            }
+        }
+        
+        // Verificar si el email ya existe
+        async function isEmailTaken(email) {
+            try {
+                const response = await fetch(`/api/auth/check-email/${encodeURIComponent(email)}`);
+                const data = await response.json();
+                return data.exists;
+            } catch (error) {
+                console.error('Error checking email:', error);
+                return false;
+            }
+        }
+        
+        // Actualizar estado del botón de registro
+        function updateRegisterButton() {
+            const allValid = Object.values(validationState).every(isValid => isValid);
+            registerBtn.disabled = !allValid;
+            
+            if (allValid) {
+                registerBtn.style.background = '#28a745';
+                registerBtn.textContent = '🚀 Crear Cuenta';
+            } else {
+                registerBtn.style.background = '#6c757d';
+                registerBtn.textContent = '📝 Completa todos los campos';
+            }
+        }
+          // Manejar envío del formulario
+        registerForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            // Validar una vez más antes de registrar
+            if (!Object.values(validationState).every(isValid => isValid)) {
+                alert('Por favor, completa todos los campos correctamente');
+                return;
+            }
+            
+            // Deshabilitar botón durante el registro
+            registerBtn.disabled = true;
+            registerBtn.textContent = '⏳ Creando cuenta...';
+            
+            try {
+                // Preparar datos para enviar
+                const userData = {
+                    fullName: fullnameInput.value.trim(),
+                    username: usernameInput.value.trim(),
+                    email: emailInput.value.trim(),
+                    password: passwordInput.value
+                };
+                
+                // Enviar solicitud de registro
+                const response = await fetch('/api/auth/register', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(userData)
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    // Mostrar éxito
+                    registerBtn.textContent = '✅ Cuenta creada exitosamente';
+                    registerBtn.style.background = '#28a745';
+                    
+                    // Redirigir al login después de un delay
+                    setTimeout(() => {
+                        alert('¡Cuenta creada exitosamente! Ahora puedes iniciar sesión.');
+                        window.location.href = '/';
+                    }, 1500);
+                    
+                } else {
+                    // Mostrar error del servidor
+                    registerBtn.textContent = '❌ ' + result.message;
+                    registerBtn.style.background = '#dc3545';
+                    
+                    setTimeout(() => {
+                        updateRegisterButton();
+                    }, 3000);
+                }
+                
+            } catch (error) {
+                console.error('Error during registration:', error);
+                
+                // Manejar error de conexión
+                registerBtn.textContent = '❌ Error de conexión';
+                registerBtn.style.background = '#dc3545';
+                
+                setTimeout(() => {
+                    updateRegisterButton();
+                }, 3000);
+            }
+        });
+    </script>
+</body>
+</html>

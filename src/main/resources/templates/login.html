@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Tres en Raya - Iniciar Sesión</title>
+    <link rel="stylesheet" href="/styles.css">
+    <style>
+        .login-container {
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 2rem;
+            margin-top: 5rem;
+        }
+        
+        .login-box {
+            background: #fff;
+            padding: 3rem 2rem;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            border: 1px solid #ddd;
+        }
+        
+        .login-title {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: #333;
+            font-size: 2em;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+            color: #555;
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1em;
+            transition: border-color 0.3s ease;
+            box-sizing: border-box;
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: #007bff;
+        }
+        
+        .login-btn {
+            width: 100%;
+            padding: 15px;
+            font-size: 1.1em;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            margin-top: 1rem;
+        }
+        
+        .login-btn:hover {
+            background: #0056b3;
+        }
+        
+        .login-btn:disabled {
+            background: #6c757d;
+            cursor: not-allowed;
+        }
+        
+        .error-message {
+            color: #dc3545;
+            font-size: 0.9em;
+            margin-top: 0.5rem;
+            display: none;
+        }
+        
+        .demo-credentials {
+            background: #f8f9fa;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            border-left: 4px solid #17a2b8;
+        }
+        
+        .demo-credentials h4 {
+            margin: 0 0 0.5rem 0;
+            color: #17a2b8;
+            font-size: 0.9em;
+        }
+        
+        .demo-credentials p {
+            margin: 0.25rem 0;
+            font-size: 0.85em;
+            color: #6c757d;
+        }
+        
+        .welcome-message {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: #666;
+            font-size: 1em;
+        }
+        
+        /* Tema oscuro */
+        body.dark-theme .login-box {
+            background: #2d2d2d;
+            border-color: #444;
+        }
+        
+        body.dark-theme .login-title {
+            color: #e0e0e0;
+        }
+        
+        body.dark-theme .form-label {
+            color: #ccc;
+        }
+        
+        body.dark-theme .form-input {
+            background: #1a1a1a;
+            border-color: #555;
+            color: #e0e0e0;
+        }
+        
+        body.dark-theme .form-input:focus {
+            border-color: #007bff;
+        }
+        
+        body.dark-theme .demo-credentials {
+            background: #1a1a1a;
+            border-left-color: #17a2b8;
+        }
+        
+        body.dark-theme .welcome-message {
+            color: #ccc;
+        }
+    </style>
+</head>
+<body>
+    <button class="theme-toggle">🌙 Tema Oscuro</button>
+    
+    <div class="login-container">
+        <div class="login-box">
+            <h1 class="login-title">🎮 Tres en Raya</h1>
+            <p class="welcome-message">Inicia sesión para acceder al juego</p>
+              <div class="demo-credentials">
+                <h4>📋 Usuarios de Prueba:</h4>
+                <p><strong>Admin:</strong> admin / admin</p>
+                <p><strong>O crea:</strong> <a href="/register" style="color: #007bff; text-decoration: none;">una cuenta nueva</a></p>
+            </div>
+            
+            <form id="login-form">
+                <div class="form-group">
+                    <label for="username" class="form-label">👤 Usuario:</label>
+                    <input type="text" id="username" name="username" class="form-input" 
+                           placeholder="Ingresa tu usuario" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="password" class="form-label">🔒 Contraseña:</label>
+                    <input type="password" id="password" name="password" class="form-input" 
+                           placeholder="Ingresa tu contraseña" required>
+                </div>
+                
+                <div class="error-message" id="error-message">
+                    ❌ Usuario o contraseña incorrectos
+                </div>
+                  <button type="submit" class="login-btn" id="login-btn">
+                    🚀 Iniciar Sesión
+                </button>
+            </form>
+            
+            <div style="text-align: center; margin-top: 1.5rem;">
+                <p style="color: #666; margin-bottom: 0.5rem;">¿No tienes cuenta?</p>
+                <a href="/register" style="color: #007bff; text-decoration: none; font-weight: bold;">
+                    📝 Registrarse
+                </a>
+            </div>
+            
+            <div style="text-align: center; margin-top: 2rem; font-size: 0.9em; opacity: 0.7;">
+                <p>🔐 Sistema de autenticación seguro</p>
+                <p>🎯 Registra tu progreso y configuraciones</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="/common.js"></script>
+    <script>
+        // Elementos del formulario
+        const loginForm = document.getElementById('login-form');
+        const usernameInput = document.getElementById('username');
+        const passwordInput = document.getElementById('password');        const loginBtn = document.getElementById('login-btn');
+        const errorMessage = document.getElementById('error-message');
+        
+        // Verificar si ya está autenticado al cargar la página
+        document.addEventListener('DOMContentLoaded', function() {
+            if (isAuthenticated()) {
+                window.location.href = '/menu';
+            }
+            
+            // Agregar listeners para Enter en los campos
+            usernameInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    passwordInput.focus();
+                }
+            });
+            
+            passwordInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    loginForm.dispatchEvent(new Event('submit'));
+                }
+            });
+        });
+          // Manejar el envío del formulario
+        loginForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const username = usernameInput.value.trim();
+            const password = passwordInput.value;
+            
+            // Validar campos vacíos
+            if (!username || !password) {
+                showError('Por favor, completa todos los campos');
+                return;
+            }
+            
+            // Deshabilitar botón durante la validación
+            loginBtn.disabled = true;
+            loginBtn.textContent = '⏳ Verificando...';
+            
+            try {
+                // Enviar solicitud de login
+                const response = await fetch('/api/auth/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        username: username,
+                        password: password
+                    })
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    // Login exitoso
+                    loginBtn.textContent = '✅ Bienvenido ' + result.fullName;
+                    loginBtn.style.background = '#28a745';
+                    
+                    // Guardar estado de autenticación con información del usuario
+                    setAuthenticated(true, result.username, result.fullName);
+                    
+                    // Redirigir al menú después de un breve delay
+                    setTimeout(() => {
+                        window.location.href = '/menu';
+                    }, 1000);
+                    
+                } else {
+                    // Login fallido
+                    showError(result.message || 'Usuario o contraseña incorrectos');
+                    resetForm();
+                }
+                
+            } catch (error) {
+                console.error('Error during login:', error);
+                showError('Error de conexión. Inténtalo de nuevo.');
+                resetForm();
+            }
+        });
+        
+        // Mostrar mensaje de error
+        function showError(message) {
+            errorMessage.textContent = '❌ ' + message;
+            errorMessage.style.display = 'block';
+            
+            // Ocultar error después de 4 segundos
+            setTimeout(() => {
+                errorMessage.style.display = 'none';
+            }, 4000);
+        }
+        
+        // Resetear formulario
+        function resetForm() {
+            loginBtn.disabled = false;
+            loginBtn.textContent = '🚀 Iniciar Sesión';
+            loginBtn.style.background = '#007bff';
+            passwordInput.value = '';
+            passwordInput.focus();
+        }
+        
+        // Verificar si está autenticado
+        function isAuthenticated() {
+            return localStorage.getItem('isLoggedIn') === 'true';
+        }
+          // Establecer estado de autenticación
+        function setAuthenticated(status, username = null, fullName = null) {
+            localStorage.setItem('isLoggedIn', status.toString());
+            if (status) {
+                localStorage.setItem('loginTime', new Date().getTime().toString());
+                if (username) localStorage.setItem('currentUser', username);
+                if (fullName) localStorage.setItem('currentUserFullName', fullName);
+            } else {
+                localStorage.removeItem('loginTime');
+                localStorage.removeItem('currentUser');
+                localStorage.removeItem('currentUserFullName');
+            }
+        }
+        
+        // Auto-completar campos para desarrollo (remover en producción)
+        document.addEventListener('keydown', function(e) {
+            // Ctrl + D para auto-completar (solo para desarrollo)
+            if (e.ctrlKey && e.key === 'd') {
+                e.preventDefault();
+                usernameInput.value = 'admin';
+                passwordInput.value = 'admin';
+                usernameInput.focus();
+            }
+        });
+    </script>
+</body>
+</html>

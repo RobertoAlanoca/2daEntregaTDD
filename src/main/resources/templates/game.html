@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Tres en Raya - Juego</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+    <button class="theme-toggle">🌙 Tema Oscuro</button>
+      <nav class="navbar">
+        <div class="nav-buttons">
+            <a href="/menu" class="btn btn-secondary">🏠 Menú</a>
+            <a href="/config" class="btn btn-secondary">⚙️ Configuración</a>
+            <a href="/history" class="btn btn-secondary">📊 Historial</a>
+            <a href="/info" class="btn btn-secondary">ℹ️ Información</a>
+        </div>
+    </nav>
+
+    <h1>Tres en Raya</h1>
+    <div id="status">Cargando...</div>
+    <div id="board"></div>
+    <button id="reset" class="btn">🔄 Reiniciar</button>
+
+    <script src="/common.js"></script>
+    <script>
+        const boardDiv = document.getElementById('board');
+        const statusDiv = document.getElementById('status');
+        const resetBtn = document.getElementById('reset');
+        let currentGameMoves = [];
+
+        function fetchBoard() {
+            fetch('/game/board')
+                .then(r => r.json())
+                .then(board => {
+                    boardDiv.innerHTML = '';
+                    for (let x = 0; x < 3; x++) {
+                        for (let y = 0; y < 3; y++) {
+                            const cell = document.createElement('div');
+                            cell.className = 'cell';
+                            
+                            const cellValue = board[x][y];
+                            if (cellValue) {
+                                // Aplicar símbolo personalizado
+                                const player1Symbol = loadConfig('player1Symbol', defaultConfig.player1Symbol);
+                                const player2Symbol = loadConfig('player2Symbol', defaultConfig.player2Symbol);
+                                
+                                if (cellValue === 'X') {
+                                    cell.textContent = player1Symbol;
+                                    cell.classList.add('player1');
+                                } else if (cellValue === 'O') {
+                                    cell.textContent = player2Symbol;
+                                    cell.classList.add('player2');
+                                }
+                            }
+                            
+                            cell.onclick = () => makeMove(x, y);
+                            boardDiv.appendChild(cell);
+                        }
+                    }
+                });
+        }
+
+        function fetchStatus() {
+            fetch('/game/status')
+                .then(r => r.text())
+                .then(status => {
+                    statusDiv.textContent = status;
+                    
+                    // Si el juego terminó, guardar en historial
+                    if (status.includes('Ganador:') || status.includes('Empate')) {
+                        setTimeout(() => {
+                            let winner = 'Empate';
+                            if (status.includes('Ganador: X')) {
+                                winner = 'Jugador 1 (X)';
+                            } else if (status.includes('Ganador: O')) {
+                                winner = 'Jugador 2 (O)';
+                            }
+                            saveGameResult(winner, currentGameMoves);
+                        }, 100);
+                    }
+                });
+        }
+
+        function makeMove(x, y) {
+            fetch(`/game/move?x=${x}&y=${y}`, { method: 'POST' })
+                .then(r => r.text())
+                .then(msg => {
+                    currentGameMoves.push({x, y, time: new Date().toLocaleTimeString()});
+                    fetchBoard();
+                    fetchStatus();
+                });
+        }
+
+        resetBtn.onclick = () => {
+            fetch('/game/reset', { method: 'POST' })
+                .then(r => r.text())
+                .then(msg => {
+                    currentGameMoves = [];
+                    fetchBoard();
+                    fetchStatus();
+                });
+        };
+
+        // Inicializar
+        fetchBoard();
+        fetchStatus();
+    </script>
+</body>
+</html>
