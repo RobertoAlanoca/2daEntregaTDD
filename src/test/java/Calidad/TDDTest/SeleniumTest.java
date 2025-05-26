@@ -17,7 +17,7 @@ import java.time.Duration;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class SeleniumTest {
-    private WebDriver driver;
+   private WebDriver driver;
     private WebDriverWait wait;
 
     @BeforeAll
@@ -28,15 +28,7 @@ public class SeleniumTest {
 
     @BeforeEach
     public void setup() {
-        ChromeOptions options = new ChromeOptions();
-        options.addArguments("--headless=new"); // Modo sin interfaz gráfica (imprescindible en CI)
-        options.addArguments("--no-sandbox");   // Requerido para evitar errores en contenedores
-        options.addArguments("--disable-dev-shm-usage"); // Evita uso excesivo de /dev/shm
-        options.addArguments("--disable-gpu");  // Recomendado en entornos sin GPU
-        options.addArguments("--remote-allow-origins=*"); // A veces necesario por políticas de CORS
-        options.addArguments("--user-data-dir=/tmp/chrome-user-data-" + System.currentTimeMillis()); // Directorio temporal único
-
-        driver = new ChromeDriver(options);
+        driver = new ChromeDriver();
         wait = new WebDriverWait(driver, Duration.ofSeconds(10));
     }
 
@@ -52,27 +44,27 @@ public class SeleniumTest {
         String title = driver.getTitle();
         assertTrue(title.contains("Tres en Raya"));
         Thread.sleep(2000);
-        
+
         // === 2. Login como admin ===
         WebElement usernameField = wait.until(ExpectedConditions.presenceOfElementLocated(By.id("username")));
         WebElement passwordField = driver.findElement(By.id("password"));
         WebElement loginButton = driver.findElement(By.id("login-btn"));
-        
+
         usernameField.clear();
         usernameField.sendKeys("admin");
         passwordField.clear();
         passwordField.sendKeys("admin");
           loginButton.click();
-        
+
         // Esperar a que redirija al menú
         wait.until(ExpectedConditions.urlContains("/menu"));
         assertTrue(driver.getCurrentUrl().contains("/menu"));
         Thread.sleep(2000);
-        
+
         // === 3. Navegar al juego ===
         WebElement playLink = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@href='/game' and contains(text(), 'Jugar')]")));
         playLink.click();
-        
+
         // Esperar a que cargue la página del juego
         wait.until(ExpectedConditions.urlContains("/game"));
         assertTrue(driver.getCurrentUrl().contains("/game"));        // Verificar que el tablero existe
@@ -100,10 +92,11 @@ public class SeleniumTest {
         resetButton.click();
         Thread.sleep(2000);
           // Hacer logout al final del test
-        WebElement logoutButton = driver.findElement(By.id("logout-btn"));
+        WebElement logoutButton = wait.until(ExpectedConditions.elementToBeClickable(By.id("logout-btn")));
         logoutButton.click();
         // Espera a que redirija al login
         wait.until(ExpectedConditions.urlContains("/"));
         Thread.sleep(2000);
     }
+
 }
