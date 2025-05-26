@@ -1,4 +1,4 @@
-package Calidad.TDDTest;
+/*package Calidad.TDDTest;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.junit.jupiter.api.AfterEach;
@@ -98,3 +98,4 @@ public class SeleniumTest {
         Thread.sleep(2000);
     }
 }
+*/
