@@ -1,5 +1,6 @@
 package Calidad.TDDTest;
 
+import io.github.bonigarcia.wdm.WebDriverManager;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -17,7 +18,8 @@ public class SeleniumTest {
 
     @BeforeAll
     public static void setup() {
-        // Asegúrate de tener ChromeDriver en tu PATH
+        // WebDriverManager descarga automáticamente la versión correcta de ChromeDriver
+        WebDriverManager.chromedriver().setup();
         driver = new ChromeDriver();
     }
 
